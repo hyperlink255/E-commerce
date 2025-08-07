@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { assets } from '../assets/admin_assets/assets'
 
+const backendUrl = import.meta.env.VITE_BACKENF_URL;
+axios.defaults.baseURL = backendUrl
+
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([])
+
 
   const fetchAllOrders = async () => {
     if (!token) {
       return null
     }
     try {
-      const res = await axios.post('http://localhost:5000/api/order/list', {}, { headers: { token } })
+      const res = await axios.post('/api/order/list', {}, { headers: { token } })
       if (res.data.success) {
         setOrders(res.data.orders.reverse())
       } else {
@@ -24,7 +28,7 @@ const Orders = ({ token }) => {
   }
    const statusHandler = async (event,orderId) => {
     try{
-        const res = await axios.post('http://localhost:5000/api/order/status',{orderId,status:event.target.value},{headers:{token}})
+        const res = await axios.post('/api/order/status',{orderId,status:event.target.value},{headers:{token}})
         if(res.data.success){
           await fetchAllOrders()
         }

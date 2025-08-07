@@ -7,7 +7,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const PlaceOreder = () => {
-  const {navigate,token,cartItmes,setCartItems,getCartAmount,delivery_fee,products} = useContext(ShopContext)
+  const {navigate,token,cartItmes,setCartItems,getCartAmount,delivery_fee,products,axios} = useContext(ShopContext)
 
   const [method,setMethod] = useState('cod')
   const [formData,setFormData] = useState({
@@ -54,7 +54,7 @@ const PlaceOreder = () => {
          }
          switch(method){
           case "cod":
-            const res = await axios.post('http://localhost:5000/api/order/place',orderData,{headers:{token}})
+            const res = await axios.post('/api/order/place',orderData,{headers:{token}})
             if(res.data.success){
               setCartItems({})
               navigate('/orders')
@@ -64,7 +64,7 @@ const PlaceOreder = () => {
             break;
 
             case "stripe" :
-              const resStripe = await axios.post('http://localhost:5000/api/order/stripe',orderData,{headers:{token}})
+              const resStripe = await axios.post('/api/order/stripe',orderData,{headers:{token}})
               if(resStripe.data.success){
                 const {session_url} = resStripe.data;
                 window.location.replace(session_url)

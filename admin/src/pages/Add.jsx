@@ -3,6 +3,9 @@ import axios from 'axios'
 import { assets } from '../assets/admin_assets/assets'
 import { toast } from 'react-toastify'
 
+const backendUrl = import.meta.env.VITE_BACKENF_URL;
+axios.defaults.baseURL = backendUrl
+
 const Add = ({token}) => {
   const [image1,setImage1] = useState(false)
   const [image2,setImage2] = useState(false)
@@ -34,7 +37,7 @@ const Add = ({token}) => {
     image3 && formData.append("image3",image3)
     image4 && formData.append("image4",image4)
 
-    const res = await axios.post("http://localhost:5000/api/product/add",formData,{headers:{token}})
+    const res = await axios.post("/api/product/add",formData,{headers:{token}})
     if(res.data.success){
       toast.success(res.data.message)
       setName("")

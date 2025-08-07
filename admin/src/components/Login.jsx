@@ -1,19 +1,26 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import { toast } from 'react-toastify'
+import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+axios.defaults.baseURL = backendUrl;
 
 const Login = ({setToken}) => {
-  
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
+  const navigate = useNavigate()
 
+  
   const onSubmitHandler = async (e) => {
     try{
       e.preventDefault()
-      const response = await axios.post("http://localhost:5000/api/user/admin",{email,password})
+      const response = await axios.post(`${backendUrl}/api/user/admin`,{email,password})
       if(response.data.success){
         setToken(response.data.token)
+        navigate("/")
         toast.success(response.data.message)
+
       }else{
         toast.error(response.data.message)
       }

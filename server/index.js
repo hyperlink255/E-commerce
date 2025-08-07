@@ -10,8 +10,7 @@ import cartRouter from './routes/cartRoutes.js'
 import orderRouter from './routes/orderRoutes.js'
 
 const app = express()
-const PORT = process.env.PORT || 5000
-
+const PORT = process.env.PORT || 4000
 connectDB()
 connectCloudinary()
 
@@ -20,16 +19,18 @@ app.use(cors())
 app.use(morgan('dev'))
 
 //api endpoints
-app.listen(PORT,() =>  console.log('Server start'))
 
 app.use('/api/user',userRouter)
 app.use('/api/product',productRouter)
 app.use('/api/cart',cartRouter)
 app.use('/api/order',orderRouter)
 
-if (process.env.NODE_ENV !== "production") {
+
 app.get('/',(req,res) => {
     res.send('API Working')
 })
+if (process.env.NODE_ENV !== "production") {
+
+app.listen(PORT,() =>  console.log('Server start'))
 }
 export default app
